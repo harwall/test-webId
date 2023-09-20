@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 
 function App() {
   const [listUsers, setListUsers] = useState([]);
-
   const [checkedUsers, setCheckedUsers] = useState([]);
 
   const handleOnChange = (e, userId) => {
@@ -16,7 +15,6 @@ function App() {
       setCheckedUsers(checkedUsersCopy);
     }
   };
-
 
   useEffect(()=> {
     var requestUsers = {
@@ -32,26 +30,29 @@ function App() {
     .catch(error => console.log('error', error));
   }, [])
 
-  useEffect(()=> {
-    console.log('checkedUsers', checkedUsers)
-  }, [checkedUsers])
-
-
   return (
     <div className="App">
-      {listUsers.length > 0 &&
-        <div>
-          {listUsers.map((user) =>
-          <div key={user.id}>
-            <input type="checkbox" id={user.id} name={user.id} onChange={(e) => handleOnChange(e, user.id)}/>
-            <label htmlFor={user.id}>{user.name}</label>
+      <div className="averageAge">
+        <h1 className="averageAge__title">Average age calculator</h1>
+
+        <div className="averageAge__columnContainer">
+          <div className="averageAge__column averageAge__column--left">
+            {listUsers.length > 0 &&
+              <div className="averageAge__listContainer">
+                {listUsers.map((user) =>
+                  <div className="averageAge__listItem" key={user.id}>
+                    <input className="averageAge__listItemInput" type="checkbox" id={user.id} name={user.id} onChange={(e) => handleOnChange(e, user.id)}/>
+                    <label className="averageAge__listItemLabel" htmlFor={user.id}>{user.name}</label>
+                  </div>
+                )}
+              </div>
+            }
           </div>
-          )}
+          <div className="averageAge__column averageAge__column--right">
+            <AverageAge checkedUsers={checkedUsers} />
+          </div>
         </div>
-      }
-
-      <AverageAge checkedUsers={checkedUsers} />
-
+      </div>
     </div>
   );
 }

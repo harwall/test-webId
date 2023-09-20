@@ -1,3 +1,4 @@
+import logo from './birthday-cake.svg';
 import React, { useState, useEffect } from 'react';
 
 function AverageAge(UserList) {
@@ -9,24 +10,33 @@ function AverageAge(UserList) {
       method: 'GET',
       redirect: 'follow'
     };
-    console.log('UserList', UserList.checkedUsers)
 
     fetch((`https://infallible-tereshkova-717266.netlify.app/.netlify/functions/server/average?ids=${UserList.checkedUsers}`), requestAverageAge)
     .then(response => response.json())
     .then((result) => {
-      console.log('averageAge', result)
       setAverageAge(result);
     })
     .catch(error => console.log('error', error));
   }, [UserList])
 
   return (
-    <div className="App">
-
-      {averageAge && averageAge.average &&
-        <p>l'âge moyen est de : {currentYear - (averageAge.average)} ans</p>
+    <div className="result">
+      <img src={logo} className="result__birthdayCake" alt="birthday cake" />
+      {averageAge && averageAge.error &&
+        <p>
+          Erreur : &nbsp;
+          {averageAge.error}
+        </p>
       }
-
+      {averageAge && averageAge.average &&
+        <p>
+          Âge moyen des personnes sélectionnées
+          <br />
+          <span className="result__number">
+            {Math.round(currentYear - (averageAge.average))} ans
+          </span>
+        </p>
+      }
     </div>
   );
 }
